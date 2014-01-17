@@ -1,0 +1,236 @@
+GAMS Rev 240  WEX-VS8 24.0.2 x86/MS Windows                                                                                                                                                                                            12/25/13 17:05:17 Page 1
+ED model
+C o m p i l a t i o n
+
+
+   2  Sets
+   3           i   generating unit
+   4           j   load bus;
+   5   
+   6  Parameters
+   7          genPLow(i) lower  bound of each generating unit
+   8          genPUp(i) upper bound of each generating unit
+   9          loadP(j) demand at load bus j;
+  10   
+  11  Parameter FactorA(i) weighting factor A for generation cost function;
+  12  Parameter FactorB(i) weighting factor B for generation cost function;
+  13  Parameter FactorC(i) weighting factor C for generation cost function;
+  14   
+GDXIN   E:\GitIpssLibWorkspace\org.interpss.tutorial\_gams_java_gdb1.gdx
+--- LOAD  i = 1:i
+--- LOAD  j = 2:j
+--- LOAD  genPLow = 3:genPLow
+--- LOAD  genPUp = 4:genPUp
+--- LOAD  loadP = 5:loadP
+--- LOAD  FactorA = 6:FactorA
+--- LOAD  FactorB = 7:FactorB
+--- LOAD  FactorC = 8:FactorC
+  18   
+  19  Variables
+  20           genp(i)     generation output for each generating unit
+  21           ft       total generation cost ;
+  22  Equations
+  23          cost            define objective function
+  24          powerBalance    real power balance of the whole network;
+  25   
+  26  cost.. ft =e= sum(i,  FactorA(i)+FactorB(i)*genp(i)+FactorC(i)*genp(i)*genp(i));
+  27  powerBalance ..      sum(i, genp(i)) =g= sum(j,loadP(j)) ;
+  28    genp.lo(i)  =  genPLow(i);
+  29    genp.up(i)  =  genPUp(i);
+  30   
+  31  Model transport /all/ ;
+  32   
+  33  solve transport using nlp minimizing ft ;
+  34   
+  35  display genp.l, genp.m ;
+GAMS Rev 240  WEX-VS8 24.0.2 x86/MS Windows                                                                                                                                                                                            12/25/13 17:05:17 Page 2
+ED model
+Include File Summary
+
+
+   SEQ   GLOBAL TYPE      PARENT   LOCAL  FILENAME
+
+     1        1 INPUT          0       0  E:\GitIpssLibWorkspace\org.interpss.tutorial\_gams_java_gjo1.gms
+     2       15 GDXIN          1      15  E:\GitIpssLibWorkspace\org.interpss.tutorial\_gams_java_gdb1.gdx
+
+
+COMPILATION TIME     =        0.000 SECONDS      3 Mb  WIN240-240 Feb 14, 2013
+GAMS Rev 240  WEX-VS8 24.0.2 x86/MS Windows                                                                                                                                                                                            12/25/13 17:05:17 Page 3
+ED model
+Equation Listing    SOLVE transport Using NLP From line 33
+
+
+---- cost  =E=  define objective function
+
+cost..  - (30.0004)*genp(Bus1) - (10.0003)*genp(Bus2) - (70.003)*genp(Bus3) - (50.0072)*genp(Bus6) - (40.0126)*genp(Bus8) + ft =E= 1350 ; (LHS = -10.2007404999999, INFES = 1360.2007405 ****)
+     
+
+---- powerBalance  =G=  real power balance of the whole network
+
+powerBalance..  genp(Bus1) + genp(Bus2) + genp(Bus3) + genp(Bus4) + genp(Bus5) + genp(Bus6) + genp(Bus7) + genp(Bus8) + genp(Bus9) + genp(Bus10) + genp(Bus11) + genp(Bus12) + genp(Bus13) + genp(Bus14) =G= 2.59 ; (LHS = 0.23, INFES = 2.36 ****)
+     
+GAMS Rev 240  WEX-VS8 24.0.2 x86/MS Windows                                                                                                                                                                                            12/25/13 17:05:17 Page 4
+ED model
+Column Listing      SOLVE transport Using NLP From line 33
+
+
+---- genp  generation output for each generating unit
+
+genp(Bus1)
+                (.LO, .L, .UP, .M = 0.02, 0.02, 2.7, 0)
+     (-30.0004) cost
+        1       powerBalance
+        0       (OLD LEVEL ****)
+
+genp(Bus2)
+                (.LO, .L, .UP, .M = 0.03, 0.03, 0.5, 0)
+     (-10.0003) cost
+        1       powerBalance
+        0       (OLD LEVEL ****)
+
+genp(Bus3)
+                (.LO, .L, .UP, .M = 0.05, 0.05, 0.5, 0)
+     (-70.003)  cost
+        1       powerBalance
+        0       (OLD LEVEL ****)
+
+REMAINING 11 ENTRIES SKIPPED
+
+---- ft  total generation cost
+
+ft
+                (.LO, .L, .UP, .M = -INF, 0, +INF, 0)
+        1       cost
+
+GAMS Rev 240  WEX-VS8 24.0.2 x86/MS Windows                                                                                                                                                                                            12/25/13 17:05:17 Page 5
+ED model
+Model Statistics    SOLVE transport Using NLP From line 33
+
+
+MODEL STATISTICS
+
+BLOCKS OF EQUATIONS           2     SINGLE EQUATIONS            2
+BLOCKS OF VARIABLES           2     SINGLE VARIABLES           15  5 projected
+NON ZERO ELEMENTS            20     NON LINEAR N-Z              5
+DERIVATIVE POOL              10     CONSTANT POOL              25
+CODE LENGTH                  32
+
+
+GENERATION TIME      =        0.000 SECONDS      4 Mb  WIN240-240 Feb 14, 2013
+
+
+EXECUTION TIME       =        0.000 SECONDS      4 Mb  WIN240-240 Feb 14, 2013
+GAMS Rev 240  WEX-VS8 24.0.2 x86/MS Windows                                                                                                                                                                                            12/25/13 17:05:17 Page 6
+ED model
+Solution Report     SOLVE transport Using NLP From line 33
+
+
+               S O L V E      S U M M A R Y
+
+     MODEL   transport           OBJECTIVE  ft
+     TYPE    NLP                 DIRECTION  MINIMIZE
+     SOLVER  CONOPT              FROM LINE  33
+
+**** SOLVER STATUS     1 Normal Completion         
+**** MODEL STATUS      2 Locally Optimal           
+**** OBJECTIVE VALUE             1421.6385
+
+ RESOURCE USAGE, LIMIT          0.000      1000.000
+ ITERATION COUNT, LIMIT         5    2000000000
+ EVALUATION ERRORS              0             0
+CONOPT 3         Feb 14, 2013 24.0.2 WIN 38380.38394 VS8 x86/MS Windows       
+ 
+ 
+    C O N O P T 3   version 3.15I
+    Copyright (C)   ARKI Consulting and Development A/S
+                    Bagsvaerdvej 246 A
+                    DK-2880 Bagsvaerd, Denmark
+ 
+ 
+    The model has 15 variables and 2 constraints
+    with 20 Jacobian elements, 5 of which are nonlinear.
+    The Hessian of the Lagrangian has 5 elements on the diagonal,
+    0 elements below the diagonal, and 5 nonlinear variables.
+ 
+ ** Optimal solution. There are no superbasic variables.
+ 
+ 
+ CONOPT time Total                            0.002 seconds
+   of which: Function evaluations             0.000 =  0.0%
+             1st Derivative evaluations       0.000 =  0.0%
+ 
+
+                           LOWER          LEVEL          UPPER         MARGINAL
+
+---- EQU cost            1350.0000      1350.0000      1350.0000         1.0000      
+---- EQU powerBala~         2.5900         2.5900        +INF           30.0382      
+
+  cost  define objective function
+  powerBalance  real power balance of the whole network
+
+---- VAR genp  generation output for each generating unit
+
+             LOWER          LEVEL          UPPER         MARGINAL
+
+Bus1          0.0200         1.9100         2.7000          .          
+Bus2          0.0300         0.5000         0.5000       -20.0332      
+Bus3          0.0500         0.0500         0.5000        39.9648      
+Bus4           .              .              .           -30.0382      
+Bus5           .              .              .           -30.0382      
+Bus6          0.0600         0.0600         0.5000        19.9690      
+GAMS Rev 240  WEX-VS8 24.0.2 x86/MS Windows                                                                                                                                                                                            12/25/13 17:05:17 Page 7
+ED model
+Solution Report     SOLVE transport Using NLP From line 33
+
+
+     VAR genp  generation output for each generating unit
+
+             LOWER          LEVEL          UPPER         MARGINAL
+
+Bus7           .              .              .           -30.0382      
+Bus8          0.0700         0.0700         0.5000         9.9744      
+Bus9           .              .              .           -30.0382      
+Bus10          .              .              .           -30.0382      
+Bus11          .              .              .           -30.0382      
+Bus12          .              .              .           -30.0382      
+Bus13          .              .              .           -30.0382      
+Bus14          .              .              .           -30.0382      
+
+                           LOWER          LEVEL          UPPER         MARGINAL
+
+---- VAR ft                -INF         1421.6385        +INF             .          
+
+  ft  total generation cost
+
+
+**** REPORT SUMMARY :        0     NONOPT
+                             0 INFEASIBLE
+                             0  UNBOUNDED
+                             0     ERRORS
+GAMS Rev 240  WEX-VS8 24.0.2 x86/MS Windows                                                                                                                                                                                            12/25/13 17:05:17 Page 8
+ED model
+E x e c u t i o n
+
+
+----     35 VARIABLE genp.L  generation output for each generating unit
+
+Bus1 1.910,    Bus2 0.500,    Bus3 0.050,    Bus6 0.060,    Bus8 0.070
+
+
+----     35 VARIABLE genp.M  generation output for each generating unit
+
+Bus2  -20.033,    Bus3   39.965,    Bus4  -30.038,    Bus5  -30.038,    Bus6   19.969,    Bus7  -30.038,    Bus8    9.974,    Bus9  -30.038,    Bus10 -30.038,    Bus11 -30.038,    Bus12 -30.038,    Bus13 -30.038,    Bus14 -30.038
+
+
+
+EXECUTION TIME       =        0.000 SECONDS      3 Mb  WIN240-240 Feb 14, 2013
+
+
+USER: GAMS Development Corporation, Washington, DC   G871201/0000CA-ANY
+      Free Demo,  202-342-0180,  sales@gams.com,  www.gams.com   DC0000
+
+
+**** FILE SUMMARY
+
+Input      E:\GitIpssLibWorkspace\org.interpss.tutorial\_gams_java_gjo1.gms
+Output     E:\GitIpssLibWorkspace\org.interpss.tutorial\_gams_java_gjo1.lst
