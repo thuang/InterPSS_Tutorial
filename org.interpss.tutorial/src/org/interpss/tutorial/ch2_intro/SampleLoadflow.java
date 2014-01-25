@@ -22,7 +22,7 @@
   *
   */
 
-package org.interpss.tutorial.loadflow;
+package org.interpss.tutorial.ch2_intro;
 
 import static com.interpss.common.util.IpssLogger.ipssLogger;
 
@@ -109,7 +109,7 @@ public class SampleLoadflow {
   		branch.setAttributes("Branch 1", "", "1");
   		// set branch to a Line branch
   		branch.setBranchCode(AclfBranchCode.LINE);
-  		// adapte the branch object to a line branch object
+  		// adapt the branch object to a line branch object
 		AclfLine lineBranch = branch.toLine();
 		// set branch parameters
   		lineBranch.setZ(new Complex(0.05, 0.1), UnitType.PU, 4000.0);
