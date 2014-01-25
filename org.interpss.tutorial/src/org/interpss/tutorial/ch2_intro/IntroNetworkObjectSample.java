@@ -24,7 +24,7 @@ import com.interpss.core.aclf.adpter.AclfSwingBus;
 import com.interpss.core.algo.LoadflowAlgorithm;
 import com.interpss.core.net.Branch;
 
-public class BusOrientedOutputSample {
+public class IntroNetworkObjectSample {
 	
 	public static void main(String[] args){
 		IpssCorePlugin.init();
@@ -33,7 +33,12 @@ public class BusOrientedOutputSample {
 		//output the Bus1
 		System.out.println(busOrientedOutPut(net,net.getBus("Bus1")));
 	}
-	
+	/**
+	 * output the bus voltage, generation, load and connected branch information
+	 * @param net
+	 * @param bus
+	 * @return
+	 */
 	private static String busOrientedOutPut(AclfNetwork net, AclfBus bus){
 		StringBuffer str = new StringBuffer("");
 		str.append("------------------------------------------------------------------------------------------------------------------------------------------\n");
@@ -146,7 +151,10 @@ public class BusOrientedOutputSample {
 	
 	
 	}
-	
+	/**
+	 * create a two-bus network and run the power flow
+	 * @return an aclf network with converged power flow state.
+	 */
 	private static AclfNetwork createSampleNetwork(){
 		// Create an AclfNetwork object
 				AclfNetwork net = CoreObjectFactory.createAclfNetwork();
