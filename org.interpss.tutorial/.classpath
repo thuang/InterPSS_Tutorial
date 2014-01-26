@@ -18,7 +18,5 @@
 	<classpathentry kind="lib" path="/ipss.lib/lib/ieee/ieee.odm.schema.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="lib" path="/ipss.lib.3rdPty/lib/gams/GAMSJavaAPI.jar"/>
-	<classpathentry kind="lib" path="/ipss.lib.3rdPty/lib/cache/hazelcast-3.1.jar"/>
-	<classpathentry kind="lib" path="/ipss.lib.3rdPty/lib/cache/hazelcast-client-3.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
