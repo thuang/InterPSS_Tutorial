@@ -14,14 +14,19 @@ import org.ieee.odm.model.dstab.DStabModelParser;
 import org.interpss.IpssCorePlugin;
 import org.interpss.display.AclfOutFunc;
 import org.interpss.mapper.odm.ODMDStabParserMapper;
+import org.interpss.numeric.NumericConstant;
 import org.interpss.numeric.util.Number2String;
 import org.interpss.numeric.util.NumericUtil;
 import org.junit.Test;
 
+import com.interpss.CoreObjectFactory;
+import com.interpss.DStabObjectFactory;
 import com.interpss.SimuObjectFactory;
 import com.interpss.common.msg.IPSSMsgHub;
 import com.interpss.common.util.IpssLogger;
 import com.interpss.core.aclf.AclfGenCode;
+import com.interpss.core.acsc.fault.AcscBusFault;
+import com.interpss.core.acsc.fault.SimpleFaultCode;
 import com.interpss.core.algo.LoadflowAlgorithm;
 import com.interpss.dstab.DStabBus;
 import com.interpss.dstab.DStabGen;
@@ -32,6 +37,8 @@ import com.interpss.dstab.cache.StateVariableRecorder;
 import com.interpss.dstab.cache.StateVariableRecorder.StateRecord;
 import com.interpss.dstab.cache.StateVariableRecorder.StateVarRecType;
 import com.interpss.dstab.common.DStabOutSymbol;
+import com.interpss.dstab.devent.DynamicEvent;
+import com.interpss.dstab.devent.DynamicEventType;
 import com.interpss.dstab.mach.SalientPoleMachine;
 import com.interpss.simu.SimuContext;
 import com.interpss.simu.SimuCtxType;
@@ -72,8 +79,11 @@ public class DStab_IEEE9Bus_Test {
 		
 		dstabAlgo.setSimuMethod(DynamicSimuMethod.MODIFIED_EULER);
 		dstabAlgo.setSimuStepSec(0.001);
-		dstabAlgo.setTotalSimuTimeSec(0.01);
+		dstabAlgo.setTotalSimuTimeSec(2.0);
 		dstabAlgo.setRefMachine(dsNet.getMachine("Bus1-mach1"));
+		
+		//create a three phase fault @Bus4, start at 1.0s, last for 0.08s
+		dsNet.addDynamicEvent(create3PhaseFaultEvent("Bus4",dsNet,1.0,0.08),"3phaseFault@Bus4");
 		
 		StateVariableRecorder ssRecorder = new StateVariableRecorder(0.0001);
 		ssRecorder.addCacheRecords("Bus2-mach1",      // mach id 
@@ -97,7 +107,7 @@ public class DStab_IEEE9Bus_Test {
 		
 		IpssLogger.getLogger().setLevel(Level.FINE);
 		if (dstabAlgo.initialization()) {
-			//System.out.println(dsNet.net2String());
+
 			System.out.println("Running DStab simulation ...");
 			dstabAlgo.performSimulation();
 			//dstabAlgo.performOneStepSimulation();
@@ -322,5 +332,23 @@ public class DStab_IEEE9Bus_Test {
 	     * check sequence network data
 	     */
 	}
+    
+	private DynamicEvent create3PhaseFaultEvent(String faultBusId, DStabilityNetwork net,double startTime, double durationTime){
+	       // define an event, set the event id and event type.
+			DynamicEvent event1 = DStabObjectFactory.createDEvent("BusFault3P@"+faultBusId, "Bus Fault 3P@"+faultBusId, 
+					DynamicEventType.BUS_FAULT, net);
+			event1.setStartTimeSec(startTime);
+			event1.setDurationSec(durationTime);
+			
+	      // define a bus fault
+			DStabBus faultBus = net.getDStabBus(faultBusId);
+			AcscBusFault fault = CoreObjectFactory.createAcscBusFault("Bus Fault 3P@"+faultBusId, net);
+	  		fault.setBus(faultBus);
+			fault.setFaultCode(SimpleFaultCode.GROUND_3P);
+			fault.setZLGFault(NumericConstant.SmallScZ);
 
+	      // add this fault to the event, must be consist with event type definition before.
+			event1.setBusFault(fault); 
+			return event1;
+	}
 }

@@ -149,7 +149,6 @@ public class IntroNetworkObjectSample {
 	
 		return str.toString();
 	
-	
 	}
 	/**
 	 * create a two-bus network and run the power flow
