@@ -1,4 +1,4 @@
-package org.interpss.tutorial.loadflow;
+package org.interpss.tutorial.ch3_loadflow;
 
 import org.interpss.CorePluginObjFactory;
 import org.interpss.IpssCorePlugin;

@@ -1,4 +1,4 @@
-package org.interpss.tutorial.shortCircuit;
+package org.interpss.tutorial.ch4_shortCircuit;
 
 import org.apache.commons.math3.complex.Complex;
 import org.interpss.IpssCorePlugin;

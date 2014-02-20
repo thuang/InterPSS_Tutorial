@@ -1,4 +1,4 @@
-package org.interpss.tutorial.dstab;
+package org.interpss.tutorial.ch5_dstab;
 
 import static com.interpss.dstab.cache.StateVariableRecorder.StateVarRecType.MachineState;
 import static org.junit.Assert.assertTrue;

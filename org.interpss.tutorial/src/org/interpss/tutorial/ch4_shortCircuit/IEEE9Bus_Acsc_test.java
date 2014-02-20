@@ -1,4 +1,4 @@
-package org.interpss.tutorial.shortCircuit;
+package org.interpss.tutorial.ch4_shortCircuit;
 
 import static org.junit.Assert.assertTrue;
 
